@@ -9,6 +9,8 @@ from duckietown_msgs.msg import WheelsCmdStamped, LanePose
 class lane_controller(object):
 
     def __init__(self):
+        self.last_d = 0.0
+        self.last_phi = 0.0
         self.vel_right = 0.0
         self.vel_left = 0.0
         self.vel_cmd = WheelsCmdStamped()
@@ -31,6 +33,13 @@ class lane_controller(object):
         elif lane_pose.d < -0.055:
             self.vel_left -= 0.15
 
+
+        if (np.abs(self.last_d - lane_pose.d) > 0.2) or (np.abs(self.last_phi - lane_pose.phi) > 0.2):
+            self.vel_left = self.vel_left / 3.0
+            self.vel_right = self.vel_right/ 3.0
+
+        self.last_d = lane_pose.d
+        self.last_phi = lane_pose.phi
         self.PubVel()
 
     def PubVel(self):
