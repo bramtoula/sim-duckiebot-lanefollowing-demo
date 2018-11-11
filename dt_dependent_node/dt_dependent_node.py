@@ -3,7 +3,7 @@
 import rospy
 import numpy as np
 
-from duckietown_msgs.msg import WheelsCmdStamped
+from duckietown_msgs.msg import WheelsCmdStamped, LanePose
 
 
 class lane_controller(object):
