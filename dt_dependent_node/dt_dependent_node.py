@@ -9,8 +9,8 @@ from duckietown_msgs.msg import WheelsCmdStamped, LanePose
 class lane_controller(object):
 
     def __init__(self):
-        self.vel_right = 0.5
-        self.vel_left = 0.2
+        self.vel_right = 0.0
+        self.vel_left = 0.0
         self.vel_cmd = WheelsCmdStamped()
         self.vel_pub = rospy.Publisher('/default/wheels_driver_node/wheels_cmd', WheelsCmdStamped, queue_size=1)
         self.lane_reading = rospy.Subscriber("/default/lane_filter_node/lane_pose", LanePose, self.PoseHandling, queue_size=1)
@@ -18,18 +18,18 @@ class lane_controller(object):
     def PoseHandling(self,lane_pose):
         if lane_pose.phi > 0.:
             self.vel_left = 1.0
-            self.vel_right = 1.0 - phi*2.
+            self.vel_right = 1.0 - lane_pose.phi*0.5
         elif lane_pose.phi < 0.:
-            self.vel_left = 1.0 + phi*2
+            self.vel_left = 1.0 + lane_pose.phi*0.5
             self.vel_right = 1.0
         else:
             self.vel_left = 1.0
             self.vel_right = 1.0
 
-        #if lane_pose.d > 0.055:
-        #    self.vel_right -= 0.15
-        #elif lane_pose.d < -0.055:
-        #    self.vel_left -= 0.15
+        if lane_pose.d > 0.055:
+            self.vel_right -= 0.15
+        elif lane_pose.d < -0.055:
+            self.vel_left -= 0.15
 
         self.PubVel()
 
