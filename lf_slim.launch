@@ -50,14 +50,15 @@
                     <arg name="param_file_name" value="$(arg param_file_name)"/>
                 </include>
             </group>
-            
+
             <!-- Lane controller -->
             <group if="$(arg /lane_following/lane_controller)">
                 <remap from="lane_controller_node/lane_pose" to="lane_filter_node/lane_pose"/>
                 <remap from="lane_controller_node/wheels_cmd_executed" to="wheels_driver_node/wheels_cmd_executed" />
                 <remap from="lane_controller_node/actuator_limits" to="inverse_kinematics_node/actuator_limits" />
 
-                <include file="$(find lane_control)/launch/lane_controller_node.launch">
+          <!--      <include file="$(find lane_control)/launch/lane_controller_node.launch">-->
+                <include file="$(find my_lane_control)/launch/lane_controller_node.launch">
                     <arg name="veh" value="$(arg veh)"/>
                     <arg name="config" value="$(arg config)"/>
                     <arg name="param_file_name" value="$(arg param_file_name)"/>
@@ -78,7 +79,7 @@
     <!-- End Lane Control -->
 
     <!-- Start Test Node -->
-    <node pkg="dt_dependent_node" name="dt_dependent_node" type="dt_dependent_node.py" output="screen" /> 
+    <node pkg="dt_dependent_node" name="dt_dependent_node" type="dt_dependent_node.py" output="screen" />
     <!-- End Test Node -->
 
     <!-- Start Copied, Custom Node -->
