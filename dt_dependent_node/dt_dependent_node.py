@@ -26,11 +26,10 @@ class lane_controller(object):
             self.vel_left = 1.0
             self.vel_right = 1.0
 
-        if lane_pose.d > 0.055:
-            self.vel_right -= 0.15
-        elif lane_pose.d < -0.055:
-            self.vel_left -= 0.15
-
+        if lane_pose.d > 0.:            
+            self.vel_right-=3.*lane_pose.d
+        else:
+            self.vel_left +=3.*lane_pose.d
         self.PubVel()
 
     def PubVel(self):

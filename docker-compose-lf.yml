@@ -50,7 +50,7 @@ services:
         - gym-duckietown-net
         depends_on:
         - "lanefollow"
-        command: bash -c "sleep 20 && rosbag record /default/corrected_image/compressed -O /tmp/rosbag/image.bag -l 600"
+        command: bash -c "sleep 20 && rosbag record /default/corrected_image/compressed -O /tmp/rosbag/image.bag -l 1000"
         volumes:
         - /home/parallels/Duckietown/AIDO/my_ros_workflow/rosbag:/tmp/rosbag
         environment:
