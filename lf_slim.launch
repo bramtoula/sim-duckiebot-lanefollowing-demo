@@ -68,7 +68,7 @@
             <!-- Inverse Kinematic Node -->
             <group if="$(arg inverse_kinematics)">
                 <remap from="inverse_kinematics_node/car_cmd" to="lane_controller_node/car_cmd"/>
-                <remap from="inverse_kinematics_node/wheels_cmd" to="wheels_driver_node/wheels_cmd" />
+                <remap from="inverse_kinematics_node/wheels_cmd" to="wheels_driver_node/wheels_cmd_orig" />
                 <include file="$(find dagu_car)/launch/inverse_kinematics_node.launch">
                     <arg name="veh" value="$(arg veh)"/>
                     <arg name="config" value="$(arg config)"/>
