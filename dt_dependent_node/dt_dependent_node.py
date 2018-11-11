@@ -16,6 +16,12 @@ class lane_controller(object):
         self.lane_reading = rospy.Subscriber("/default/lane_filter_node/lane_pose", LanePose, self.PoseHandling, queue_size=1)
 
     def PoseHandling(self,lane_pose):
+        if lane_pose.phi > 0.05:
+            self.vel_left = 1.0
+            self.vel_right = 0.8
+        elif lane_pose.phi < -0.05:
+            self.vel_left = 0.8
+            self.vel_right = 1.0
         self.PubVel()
 
     def PubVel(self):
