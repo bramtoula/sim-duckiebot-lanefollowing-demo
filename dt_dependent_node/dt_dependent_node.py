@@ -5,19 +5,40 @@ import numpy as np
 
 from duckietown_msgs.msg import WheelsCmdStamped
 
-def continuous_publisher():
-    vel_pub = rospy.Publisher('/default/wheels_driver_node/wheels_cmd', WheelsCmdStamped, queue_size=1)
-    rospy.init_node('continuous_test_publisher')
-    rate = rospy.Rate(10)
 
-    while not rospy.is_shutdown():
-        msg = WheelsCmdStamped()
-        msg.vel_left = 1.0
-        msg.vel_right = 1.0
+class lane_controller(object):
 
-        vel_pub.publish(msg)
-        rate.sleep()
+    def __init__(self):
+        self.vel_right = 0.5
+        self.vel_left = 0.2
+        self.vel_cmd = WheelsCmdStamped()
+        self.vel_pub = rospy.Publisher('/default/wheels_driver_node/wheels_cmd', WheelsCmdStamped, queue_size=1)
+        self.lane_reading = rospy.Subscriber("/default/lane_filter_node/lane_pose", LanePose, self.PoseHandling, queue_size=1)
+
+    def PoseHandling(self,lane_pose):
+        self.PubVel()
+
+    def PubVel(self):
+        self.vel_cmd.vel_left = self.vel_left
+        self.vel_cmd.vel_right = self.vel_right
+        self.vel_pub.publish(self.vel_cmd)
+
+
+#def continuous_publisher():
+    #rate = rospy.Rate(10)
+
+    #while not rospy.is_shutdown():
+#        msg = WheelsCmdStamped()
+    #    msg.vel_left = 1.0
+    #    msg.vel_right = 1.0
+
+    #    vel_pub.publish(msg)
+    #    rate.sleep()
 
 
 if __name__ == '__main__':
-    continuous_publisher()
+    rospy.init_node('continuous_test_publisher')
+    lane_control_node = lane_controller()
+
+    #continuous_publisher()
+rospy.spin()
