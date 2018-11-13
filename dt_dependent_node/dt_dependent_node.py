@@ -33,15 +33,14 @@ class lane_controller(object):
         else:
             self.vel_left +=3.*lane_pose.d
 
-     #   if (np.abs(self.last_d - lane_pose.d) > 0.2) or (np.abs(self.last_phi - lane_pose.phi) > 0.2):
-      #      self.vel_left = self.vel_left/3.0
-      #      self.vel_right = self.vel_right/3.0
-        if (np.abs(self.last_phi - lane_pose.phi) > 0.5):
-            self.vel_left = 0.5#self.vel_left/3.0
-            self.vel_right = 0.5#self.vel_right/3.0
+        if (np.abs(self.last_d - lane_pose.d) > 0.2) or (np.abs(self.last_phi - lane_pose.phi) > 0.2):
+            self.vel_left = self.vel_left/3.0
+            self.vel_right = self.vel_right/3.0
 
         self.last_d = lane_pose.d
         self.last_phi = lane_pose.phi
+
+
         self.PubVel()
 
     def PubVel(self):
