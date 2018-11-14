@@ -41,29 +41,20 @@ class lane_controller(object):
         self.last_phi = lane_pose.phi
 
 
-        self.PubVel()
-
     def PubVel(self):
         self.vel_cmd.vel_left = self.vel_left
         self.vel_cmd.vel_right = self.vel_right
         self.vel_pub.publish(self.vel_cmd)
 
 
-#def continuous_publisher():
-    #rate = rospy.Rate(10)
+def continuous_publisher():
+    rospy.init_node('continuous_test_publisher')
+    lane_control_node = lane_controller()
+    rate = rospy.Rate(10)
 
-    #while not rospy.is_shutdown():
-#        msg = WheelsCmdStamped()
-    #    msg.vel_left = 1.0
-    #    msg.vel_right = 1.0
-
-    #    vel_pub.publish(msg)
-    #    rate.sleep()
+    while not rospy.is_shutdown():
+        lane_control_node.PubVel()
 
 
 if __name__ == '__main__':
-    rospy.init_node('continuous_test_publisher')
-    lane_control_node = lane_controller()
-
-    #continuous_publisher()
-rospy.spin()
+    continuous_publisher()
