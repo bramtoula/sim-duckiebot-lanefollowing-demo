@@ -28,10 +28,10 @@ class lane_controller(object):
             self.vel_left = 1.0
             self.vel_right = 1.0
 
-        if lane_pose.d > 0.:
-            self.vel_right-=3.*lane_pose.d
+        if lane_pose.d > 0.2:
+            self.vel_right-=3.*(lane_pose.d-0.2)
         else:
-            self.vel_left +=3.*lane_pose.d
+            self.vel_left +=3.*(lane_pose.d-0.2)
 
         if (np.abs(self.last_d - lane_pose.d) > 0.2) or (np.abs(self.last_phi - lane_pose.phi) > 0.2):
             self.vel_left = self.vel_left/3.0
