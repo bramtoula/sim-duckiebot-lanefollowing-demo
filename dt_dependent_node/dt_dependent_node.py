@@ -9,7 +9,7 @@ from duckietown_msgs.msg import WheelsCmdStamped, LanePose
 class lane_controller(object):
 
     def __init__(self):
-        self.lane_pos_obj = 0.2
+        self.lane_pos_obj = 0.1
         self.det_err_threshold = 0.2
         self.det_err_slowdown = 3.0
         self.corr_d = 3.0
