@@ -47,14 +47,21 @@ class lane_controller(object):
         self.vel_pub.publish(self.vel_cmd)
 
 
-def continuous_publisher():
+#def continuous_publisher():
+ #   rospy.init_node('continuous_test_publisher')
+  #  lane_control_node = lane_controller()
+   # rate = rospy.Rate(10)
+
+    #while not rospy.is_shutdown():
+     #   lane_control_node.PubVel()
+
+
+if __name__ == '__main__':
     rospy.init_node('continuous_test_publisher')
     lane_control_node = lane_controller()
     rate = rospy.Rate(10)
 
     while not rospy.is_shutdown():
         lane_control_node.PubVel()
+        rate.sleep()
 
-
-if __name__ == '__main__':
-    continuous_publisher()
