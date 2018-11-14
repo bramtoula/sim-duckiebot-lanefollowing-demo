@@ -9,6 +9,11 @@ from duckietown_msgs.msg import WheelsCmdStamped, LanePose
 class lane_controller(object):
 
     def __init__(self):
+        self.lane_pos_obj = 0.2
+        self.det_err_threshold = 0.2
+        self.det_err_slowdown = 3.0
+        self.corr_d = 3.0
+        self.corr_phi = 0.5
         self.last_d = 0.0
         self.last_phi = 0.0
         self.vel_right = 0.0
@@ -20,22 +25,22 @@ class lane_controller(object):
     def PoseHandling(self,lane_pose):
         if lane_pose.phi > 0.:
             self.vel_left = 1.0
-            self.vel_right = 1.0 - lane_pose.phi*0.5
+            self.vel_right = 1.0 - lane_pose.phi*self.corr_phi
         elif lane_pose.phi < 0.:
-            self.vel_left = 1.0 + lane_pose.phi*0.5
+            self.vel_left = 1.0 + lane_pose.phi*self.corr_phi
             self.vel_right = 1.0
         else:
             self.vel_left = 1.0
             self.vel_right = 1.0
 
-        if lane_pose.d > 0.2:
-            self.vel_right-=3.*(lane_pose.d-0.2)
+        if lane_pose.d > self.lane_pos_obj:
+            self.vel_right-=self.corr_d*(lane_pose.d-self.lane_pos_obj)
         else:
-            self.vel_left +=3.*(lane_pose.d-0.2)
+            self.vel_left +=self.corr_d*(lane_pose.d-self.lane_pos_obj)
 
-        if (np.abs(self.last_d - lane_pose.d) > 0.2) or (np.abs(self.last_phi - lane_pose.phi) > 0.2):
-            self.vel_left = self.vel_left/3.0
-            self.vel_right = self.vel_right/3.0
+        if (np.abs(self.last_d - lane_pose.d) > self.det_err_threshold) or (np.abs(self.last_phi - lane_pose.phi) > self.det_err_threshold):
+            self.vel_left = self.vel_left/self.det_err_slowdown
+            self.vel_right = self.vel_right/self.det_err_slowdown
 
         self.last_d = lane_pose.d
         self.last_phi = lane_pose.phi
